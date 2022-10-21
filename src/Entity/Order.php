@@ -19,11 +19,6 @@ class Order
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="orders")
-     */
-    private $Customer;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $Quantity;
@@ -38,21 +33,14 @@ class Order
      */
     private $Cart;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="orders")
+     */
+    private $Product;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCustomer(): ?Customer
-    {
-        return $this->Customer;
-    }
-
-    public function setCustomer(?Customer $Customer): self
-    {
-        $this->Customer = $Customer;
-
-        return $this;
     }
 
     public function getQuantity(): ?float
@@ -87,6 +75,18 @@ class Order
     public function setCart(?Cart $Cart): self
     {
         $this->Cart = $Cart;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->Product;
+    }
+
+    public function setProduct(?Product $Product): self
+    {
+        $this->Product = $Product;
 
         return $this;
     }

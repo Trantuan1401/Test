@@ -40,13 +40,13 @@ class Customer
     private $PhoneNum;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="Customer")
+     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="Customer")
      */
-    private $orders;
+    private $carts;
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,32 +103,33 @@ class Customer
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, Cart>
      */
-    public function getOrders(): Collection
+    public function getCarts(): Collection
     {
-        return $this->orders;
+        return $this->carts;
     }
 
-    public function addOrder(Order $order): self
+    public function addCart(Cart $cart): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setCustomer($this);
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeCart(Cart $cart): self
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->carts->removeElement($cart)) {
             // set the owning side to null (unless already changed)
-            if ($order->getCustomer() === $this) {
-                $order->setCustomer(null);
+            if ($cart->getCustomer() === $this) {
+                $cart->setCustomer(null);
             }
         }
 
         return $this;
     }
+
 }

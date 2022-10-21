@@ -34,6 +34,16 @@ class Cart
      */
     private $orders;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="carts")
+     */
+    private $Customer;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $Date;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -94,6 +104,30 @@ class Cart
                 $order->setCart(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->Customer;
+    }
+
+    public function setCustomer(?Customer $Customer): self
+    {
+        $this->Customer = $Customer;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->Date;
+    }
+
+    public function setDate(\DateTimeInterface $Date): self
+    {
+        $this->Date = $Date;
 
         return $this;
     }
