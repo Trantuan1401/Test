@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,74 +21,97 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      */
-    private $Quantity;
+    private $User;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="datetime")
      */
-    private $Price;
+    private $PurchaseDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="orders")
+     * @ORM\Column(type="string", length=255)
      */
-    private $Cart;
+    private $Payment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="orders")
+     * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="Orders")
      */
-    private $Product;
+    private $OrderDetail;
+
+    public function __construct()
+    {
+        $this->OrderDetail = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQuantity(): ?float
+    public function getUser(): ?User
     {
-        return $this->Quantity;
+        return $this->User;
     }
 
-    public function setQuantity(float $Quantity): self
+    public function setUser(?User $User): self
     {
-        $this->Quantity = $Quantity;
+        $this->User = $User;
 
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPurchaseDate(): ?\DateTimeInterface
     {
-        return $this->Price;
+        return $this->PurchaseDate;
     }
 
-    public function setPrice(float $Price): self
+    public function setPurchaseDate(\DateTimeInterface $PurchaseDate): self
     {
-        $this->Price = $Price;
+        $this->PurchaseDate = $PurchaseDate;
 
         return $this;
     }
 
-    public function getCart(): ?Cart
+    public function getPayment(): ?string
     {
-        return $this->Cart;
+        return $this->Payment;
     }
 
-    public function setCart(?Cart $Cart): self
+    public function setPayment(string $Payment): self
     {
-        $this->Cart = $Cart;
+        $this->Payment = $Payment;
 
         return $this;
     }
 
-    public function getProduct(): ?Product
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetail(): Collection
     {
-        return $this->Product;
+        return $this->OrderDetail;
     }
 
-    public function setProduct(?Product $Product): self
+    public function addOrderDetail(OrderDetail $orderDetail): self
     {
-        $this->Product = $Product;
+        if (!$this->OrderDetail->contains($orderDetail)) {
+            $this->OrderDetail[] = $orderDetail;
+            $orderDetail->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): self
+    {
+        if ($this->OrderDetail->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getOrders() === $this) {
+                $orderDetail->setOrders(null);
+            }
+        }
 
         return $this;
     }
