@@ -35,13 +35,13 @@ class Product
     private $Category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="Product")
+     * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="Product")
      */
-    private $orders;
+    private $orderDetails;
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->orderDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,32 +86,33 @@ class Product
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, OrderDetail>
      */
-    public function getOrders(): Collection
+    public function getOrderDetails(): Collection
     {
-        return $this->orders;
+        return $this->orderDetails;
     }
 
-    public function addOrder(Order $order): self
+    public function addOrderDetail(OrderDetail $orderDetail): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setProduct($this);
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails[] = $orderDetail;
+            $orderDetail->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeOrderDetail(OrderDetail $orderDetail): self
     {
-        if ($this->orders->removeElement($order)) {
+        if ($this->orderDetails->removeElement($orderDetail)) {
             // set the owning side to null (unless already changed)
-            if ($order->getProduct() === $this) {
-                $order->setProduct(null);
+            if ($orderDetail->getProduct() === $this) {
+                $orderDetail->setProduct(null);
             }
         }
 
         return $this;
     }
+
 }
