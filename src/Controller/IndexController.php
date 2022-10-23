@@ -2,25 +2,23 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Log\LoggerInterface;
 
 class IndexController extends AbstractController
 {
     /**
-         * @Route ("/")
-         */
-    public function index(): Response
+         * @Route ("/", name="index")
+    */
+    public function index(Request $request): Response
     {
-        return new Response(
-            '<html>
-                <header>
-                    <title>Index Page</title>
-                </header>
-                    <body>Hello World</body>
-            </html>'
-        );
+        return $this->render('index.html.twig', [
+        ]);
     }
 }
 
