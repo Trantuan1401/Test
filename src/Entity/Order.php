@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +34,16 @@ class Order
      * @ORM\Column(type="string", length=255)
      */
     private $Payment;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="Orders")
+     */
+    private $OrderDetail;
+
+    public function __construct()
+    {
+        $this->OrderDetail = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,36 @@ class Order
     public function setPayment(string $Payment): self
     {
         $this->Payment = $Payment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetail(): Collection
+    {
+        return $this->OrderDetail;
+    }
+
+    public function addOrderDetail(OrderDetail $orderDetail): self
+    {
+        if (!$this->OrderDetail->contains($orderDetail)) {
+            $this->OrderDetail[] = $orderDetail;
+            $orderDetail->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): self
+    {
+        if ($this->OrderDetail->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getOrders() === $this) {
+                $orderDetail->setOrders(null);
+            }
+        }
 
         return $this;
     }
