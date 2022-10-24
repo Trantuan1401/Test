@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 class IndexController extends AbstractController
 {
     /**
-         * @Route ("/", name="index")
+         * @Route ("/", name="app_index")
     */
     public function index(Request $request): Response
     {
