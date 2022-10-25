@@ -39,6 +39,11 @@ class Product
      */
     private $orderDetails;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Imgurl;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -111,6 +116,18 @@ class Product
                 $orderDetail->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImgurl(): ?string
+    {
+        return $this->Imgurl;
+    }
+
+    public function setImgurl(string $Imgurl): self
+    {
+        $this->Imgurl = $Imgurl;
 
         return $this;
     }

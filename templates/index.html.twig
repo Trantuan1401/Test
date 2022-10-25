@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+    <div class="container-md">
+        <h4>Page listing</h4>
+		<ul>
+            <li><a href="{{ path('app_product_index') }}" class="btn btn-light">Products</a></li>
+            <li><a href="{{ path('app_about_us') }}" class="btn btn-light">About Us</a></li>
+        </ul>   
+    </div>
+{% endblock %}
