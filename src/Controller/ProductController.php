@@ -56,10 +56,13 @@ class ProductController extends AbstractController
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository): Response
-    {
+    {   
+        $this->denyAccessUnlessGranted('ROLE_SELLER');
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
+        $user = $this->getUser();
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productImage = $form->get('Image')->getData();
@@ -105,6 +108,7 @@ class ProductController extends AbstractController
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productImage = $form->get('Image')->getData();

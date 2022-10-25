@@ -22,6 +22,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        $role = $form->get('role')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
@@ -32,15 +33,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(array($role));
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('app_index');
         }
-
+        $role = $user->getRoles();
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
+    
 }

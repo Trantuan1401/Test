@@ -6,6 +6,8 @@
     <div class="container-md col-md-4 col-md-offset-4">
         <h1>Register</h1>
         {{ form_start(registrationForm, { 'attr' : { 'class': 'form-control' } }) }}
+        {{ form_row(registrationForm.Name) }} 
+        {{ form_row(registrationForm.PhoneNum) }}  
         {{ form_row(registrationForm.Email) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
