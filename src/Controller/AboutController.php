@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 class AboutController extends AbstractController
 {
     /**
-         * @Route ("/about", name="about_us")
+         * @Route ("/about", name="app_about_us")
     */
     public function about(Request $request): Response
     {
