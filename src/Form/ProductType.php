@@ -18,8 +18,13 @@ class ProductType extends AbstractType
         $builder
             ->add('Name')
             ->add('Price')
-            ->add('Category', EntityType::class, ['class' => Category::class, 'choice_label' => 'Name'
-        ]);
+            ->add('Category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'Name'])
+            ->add('Image', FileType::class, [
+                'label' => 'Product Image',
+                'mapped' => false,
+                'required' => false,]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

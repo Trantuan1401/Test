@@ -25,9 +25,11 @@
 				<input type="number" name="minPrice"><br>
 				Max Price:
 				<input type="number" name="maxPrice"><br>
-				<input type="submit" value="Filter" class="btn btn-warning">
+				<input type="submit" value="Filter" class="btn btn-primary">
 				|
-				<a href="{{ path('app_product_index') }}" class="btn btn-warning">Reset</a>
+				<a href="{{ path('app_product_index') }}" class="btn btn-primary">Reset</a>
+				|
+				<a href="{{ path('app_product_new') }}" class="btn btn-primary">Create New </a>
 			</form>
 		</div>
 		<div class="col-9">
@@ -37,7 +39,7 @@
 					{% for product in products %}
 						<div class="col">
 							<div class="card h-100">
-								<img src=" {{ asset('images/product/' ~ product.imgurl) }}" class="card-img-top" alt="Symfony">
+								<img src=" {{ asset('images/product/' ~ product.imgurl) }}" class="card-img-top" alt="Not Found">
 								<div class="card-body">
 									<h5 class="card-title">{{ product.Name }}</h5>
 									<h6 class="card-subtitle">Category:
@@ -46,7 +48,7 @@
 										{{ product.price }}</p>
 								</div>
 								<div class="card-footer">
-									<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-warning">Show</a>
+									<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">Show</a>
 								</div>
 							</div>
 						</div>

@@ -32,14 +32,6 @@ class ProductController extends AbstractController
         $maxPrice = $request->query->get('maxPrice');
         $cat = $request->query->get('category');
         $word = $request->query->get('word');
-        if ($minPrice || $maxPrice) {
-            $products = $productRepository->findAllPriceInRange($minPrice, $maxPrice, $cat);
-        } else if ($cat) {
-            $products = $productRepository->findProductByCat($cat);
-        } else {
-            $products = $productRepository->findAll();
-        }
-
         
         $tempQuery = $productRepository->findMore($minPrice, $maxPrice, $cat, $word);
         $pageSize = 6;
@@ -70,8 +62,25 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $productImage = $form->get('Image')->getData();
+            if ($productImage) {
+                $originExt = pathinfo($productImage->getClientOriginalName(), PATHINFO_EXTENSION);
+                $productRepository->add($product, true);
+                $newFilename = $product->getId() . '.' . $originExt;
+
+                try {
+                    $productImage->move(
+                        $this->getParameter('product_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $product->setImgurl($newFilename);
             $productRepository->add($product, true);
+
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+        
+            }
         }
         return $this->renderForm('product/new.html.twig', [
             'product' => $product,
@@ -122,10 +131,6 @@ class ProductController extends AbstractController
         return $this->renderForm('product/edit.html.twig', [
             'product' => $product,
             'form' => $form
-            ->add('Image', FileType::class, [
-                'label' => 'Product Image',
-                'mapped' => false,
-                'required' => false,])  
         ]);
     }
 

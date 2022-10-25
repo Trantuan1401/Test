@@ -50,9 +50,10 @@ class ProductRepository extends ServiceEntityRepository
             $minPrice = 0;
         }
         $qb->where('p.Price >=' . $minPrice);
-        if (!(is_null($maxPrice) || empty($maxPrice))) {
-            $qb->andWhere('p.Price <=' . $maxPrice);
+        if (is_null($maxPrice) || empty($maxPrice)) {
+            $maxPrice = 999999999;
         }
+        $qb->andWhere('p.Price <=' . $maxPrice);
         if (!(is_null($cat) || empty($cat))) {
             $qb->andWhere('p.Category =' . $cat);
         }
