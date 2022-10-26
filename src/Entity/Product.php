@@ -44,6 +44,11 @@ class Product
      */
     private $Imgurl;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
+     */
+    private $Publisher;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -128,6 +133,18 @@ class Product
     public function setImgurl(string $Imgurl): self
     {
         $this->Imgurl = $Imgurl;
+
+        return $this;
+    }
+
+    public function getPublisher(): ?User
+    {
+        return $this->Publisher;
+    }
+
+    public function setPublisher(?User $Publisher): self
+    {
+        $this->Publisher = $Publisher;
 
         return $this;
     }

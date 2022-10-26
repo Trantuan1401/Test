@@ -61,10 +61,13 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        $user = $this->getUser();
+        
         
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
+            $product->setPublisher($user);
             $productImage = $form->get('Image')->getData();
             if ($productImage) {
                 $originExt = pathinfo($productImage->getClientOriginalName(), PATHINFO_EXTENSION);
@@ -108,7 +111,6 @@ class ProductController extends AbstractController
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productImage = $form->get('Image')->getData();
