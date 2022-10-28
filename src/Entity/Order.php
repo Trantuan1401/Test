@@ -31,9 +31,9 @@ class Order
     private $PurchaseDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      */
-    private $Payment;
+    private $Total;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="Orders")
@@ -74,14 +74,14 @@ class Order
         return $this;
     }
 
-    public function getPayment(): ?string
+    public function getTotal(): ?float
     {
-        return $this->Payment;
+        return $this->Total;
     }
 
-    public function setPayment(string $Payment): self
+    public function setTotal(float $Total): self
     {
-        $this->Payment = $Payment;
+        $this->Total = $Total;
 
         return $this;
     }
