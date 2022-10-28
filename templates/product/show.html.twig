@@ -20,6 +20,10 @@
                 <th>Price</th>
                 <td>{{ product.Price }}</td>
             </tr>
+            <tr>
+                <th>Publisher</th>
+                <td>{{ product.Publisher.Name }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -27,6 +31,6 @@
 
     <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">Edit</a>
 
-    {{ include('product/_delete_form.html.twig') }}
+    
 </div>
 {% endblock %}
