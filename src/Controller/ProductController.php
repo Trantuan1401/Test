@@ -29,19 +29,15 @@ class ProductController extends AbstractController
     /**
      * @Route("/listing/{pageId}", name="app_product_index", methods={"GET"})
      */
-    public function index(Request $request,
-    ProductRepository $productRepository,
-    CategoryRepository $categoryRepository,
-    int $pageId = 1): Response
-    {   
-        
+    public function index(Request $request,ProductRepository $productRepository,CategoryRepository $categoryRepository,int $pageId = 1): Response
+    {           
         $minPrice = $request->query->get('minPrice');
         $maxPrice = $request->query->get('maxPrice');
         $cat = $request->query->get('category');
         $word = $request->query->get('word');
         
         $tempQuery = $productRepository->findMore($minPrice, $maxPrice, $cat, $word);
-        $pageSize = 6;
+        $pageSize = 8;
         $paginator = new Paginator($tempQuery);
         $totalItems = count($paginator);
 
@@ -153,9 +149,9 @@ public function reviewCart(Request $request): Response
     // If any change above got trouble, we roll back (undo) all changes made above!
     $entityManager->getConnection()->rollBack();
     }
-    return new Response("Check in DB to see if the checkout process is successful");
+    return new Response("Checkout process is successful, check in database for detail!");
     } else
-    return new Response("Nothing in cart to checkout!");
+    return new Response("Shopping Cart has no product, please add some!");
     }
 
     /**
@@ -269,12 +265,4 @@ public function reviewCart(Request $request): Response
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
-    // private function filterRequestQuery($minPrice, $maxPrice, $cat)
-    // {
-    //     return [
-    //         is_numeric($minPrice) ? (float) $minPrice : NULL,
-    //         is_numeric($maxPrice) ? (float) $maxPrice : NULL,
-    //         is_numeric($cat) ? (float) $cat : NULL
-    //     ];
-    // }
 }
