@@ -52,16 +52,33 @@ class ProductController extends AbstractController
         
     }
 
+        /**
+    * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
+    */
+    public function reviewCart(Request $request): Response
+    {
+        $session = $request->getSession();
+        if ($session->has('cartElements')) {
+            $cartElements = $session->get('cartElements');
+        } else
+            $cartElements = [];
+        return $this->json($cartElements);
+    }
+
     /**
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {   
-        $this->denyAccessUnlessGranted('ROLE_SELLER');
+        
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        
+        $checkUser = $this->isGranted('ROLE_SELLER');
+        if (!$checkUser)
+        {
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }        
         
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,10 +125,17 @@ class ProductController extends AbstractController
      * @Route("/{id}/edit", name="app_product_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
-    {
+    {   
+        $checkUser = $this->isGranted('ROLE_SELLER');
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        if (!($checkUser && $user->getId() == $product->getPublisher()->getId()))
+        {
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $productImage = $form->get('Image')->getData();
             if ($productImage) {
@@ -140,11 +164,13 @@ class ProductController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="app_product_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
-    {
+    {   
+        $this->denyAccessUnlessGranted('ROLE_SELLER');
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
         }
@@ -159,4 +185,32 @@ class ProductController extends AbstractController
     //         is_numeric($cat) ? (float) $cat : NULL
     //     ];
     // }
+    
+
+
+    /**
+    * @Route("/addCart/{id}", name="app_add_cart", methods={"GET"})
+    */
+    public function addCart(Product $product, Request $request)
+    {
+        $session = $request->getSession();
+        $quantity = (int)$request->query->get('quantity');
+
+        //check if cart is empty
+        if (!$session->has('cartElements')) {
+            //if it is empty, create an array of pairs (prod Id & quantity) to store first cart element.
+            $cartElements = array($product->getId() => $quantity);
+            //save the array to the session for the first time.
+            $session->set('cartElements', $cartElements);
+        } else {
+            $cartElements = $session->get('cartElements');
+            //Add new product after the first time. (would UPDATE new quantity for added product)
+            $cartElements = array($product->getId() => $quantity) + $cartElements;
+            //Re-save cart Elements back to session again (after update/append new product to shopping cart)
+            $session->set('cartElements', $cartElements);
+        }
+        return new Response(); //means 200, successful
+    }
+ 
+
 }
