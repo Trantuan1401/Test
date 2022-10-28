@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 25, 2022 lúc 05:02 PM
--- Phiên bản máy phục vụ: 10.4.24-MariaDB
--- Phiên bản PHP: 7.4.29
+-- Thời gian đã tạo: Th10 28, 2022 lúc 04:11 PM
+-- Phiên bản máy phục vụ: 10.4.25-MariaDB
+-- Phiên bản PHP: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,8 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`id`, `name`, `description`) VALUES
 (1, 'Phone', 'This category contain all phones.'),
-(2, 'Laptop', 'This category contain all laptops.');
+(2, 'Laptop', 'This category contain all laptops.'),
+(3, 'PC', 'PC category');
 
 -- --------------------------------------------------------
 
@@ -58,16 +59,18 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20221019163250', '2022-10-19 18:33:17', 51),
-('DoctrineMigrations\\Version20221021134046', '2022-10-21 16:11:41', 30),
-('DoctrineMigrations\\Version20221021134418', '2022-10-21 16:11:41', 9),
-('DoctrineMigrations\\Version20221021142525', '2022-10-21 16:36:41', 74),
-('DoctrineMigrations\\Version20221021145113', '2022-10-21 16:52:39', 142),
-('DoctrineMigrations\\Version20221022015856', '2022-10-22 03:59:07', 193),
-('DoctrineMigrations\\Version20221023141555', '2022-10-23 16:31:42', 256),
-('DoctrineMigrations\\Version20221023142624', '2022-10-23 16:31:42', 31),
-('DoctrineMigrations\\Version20221023143907', '2022-10-23 16:39:24', 86),
-('DoctrineMigrations\\Version20221024084502', '2022-10-24 10:45:34', 181);
+('DoctrineMigrations\\Version20221019163250', '2022-10-20 09:01:33', 62),
+('DoctrineMigrations\\Version20221021134046', '2022-10-21 15:41:03', 81),
+('DoctrineMigrations\\Version20221021134418', '2022-10-21 15:44:28', 49),
+('DoctrineMigrations\\Version20221021142525', '2022-10-23 16:15:45', 119),
+('DoctrineMigrations\\Version20221021145113', '2022-10-23 16:15:46', 146),
+('DoctrineMigrations\\Version20221022015856', '2022-10-23 16:15:46', 29),
+('DoctrineMigrations\\Version20221023141555', '2022-10-23 16:16:43', 49),
+('DoctrineMigrations\\Version20221023142624', '2022-10-23 16:43:09', 216),
+('DoctrineMigrations\\Version20221023143907', '2022-10-23 16:43:10', 88),
+('DoctrineMigrations\\Version20221024084502', '2022-10-24 11:38:17', 208),
+('DoctrineMigrations\\Version20221026072717', '2022-10-26 09:27:26', 671),
+('DoctrineMigrations\\Version20221028085229', '2022-10-28 10:58:21', 213);
 
 -- --------------------------------------------------------
 
@@ -95,8 +98,15 @@ CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `purchase_date` datetime NOT NULL,
-  `payment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `total` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order`
+--
+
+INSERT INTO `order` (`id`, `user_id`, `purchase_date`, `total`) VALUES
+(1, 1, '2022-10-28 21:01:25', 16779);
 
 -- --------------------------------------------------------
 
@@ -111,6 +121,13 @@ CREATE TABLE `order_detail` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `order_detail`
+--
+
+INSERT INTO `order_detail` (`id`, `product_id`, `orders_id`, `quantity`) VALUES
+(1, 1, 1, 21);
+
 -- --------------------------------------------------------
 
 --
@@ -122,16 +139,18 @@ CREATE TABLE `product` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` double NOT NULL,
   `category_id` int(11) DEFAULT NULL,
-  `imgurl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `imgurl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `publisher_id` int(11) DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `price`, `category_id`, `imgurl`) VALUES
-(1, 'Iphone 14', 799, 1, '1.png'),
-(2, 'Iphone 14 Plus', 899, 1, '2.png');
+INSERT INTO `product` (`id`, `name`, `price`, `category_id`, `imgurl`, `publisher_id`, `description`) VALUES
+(1, 'Iphone 14', 799, 1, '1.png', 1, 'Telephone'),
+(2, 'Iphone 14 Plus', 899, 1, '2.png', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -147,6 +166,15 @@ CREATE TABLE `user` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_num` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `name`, `phone_num`) VALUES
+(1, 'tien1902@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$0dxF9uZxjTV2f/pY5.4vruHeyVlcfUlRYM0ZIv8HpSRIF7A5g/Sxi', 'tien', '1234567890'),
+(2, 'khanh@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$jx9MOvBDkqxr1CfmpcNBrecLBlOvYl4vYENwP5m6E5hNIIA3jt5O2', 'khanh', '1123456789'),
+(3, 'abc@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$onlfq2WT/PXJNLhLOqktduGGbjcMgpr9AXTMFTWi6ujnPA4/9Y9l6', 'abc', '1112345678');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -193,7 +221,8 @@ ALTER TABLE `order_detail`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_D34A04AD12469DE2` (`category_id`);
+  ADD KEY `IDX_D34A04AD12469DE2` (`category_id`),
+  ADD KEY `IDX_D34A04AD40C86FCE` (`publisher_id`);
 
 --
 -- Chỉ mục cho bảng `user`
@@ -210,7 +239,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `messenger_messages`
@@ -222,25 +251,25 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -263,7 +292,8 @@ ALTER TABLE `order_detail`
 -- Các ràng buộc cho bảng `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `FK_D34A04AD12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `FK_D34A04AD12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  ADD CONSTRAINT `FK_D34A04AD40C86FCE` FOREIGN KEY (`publisher_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
