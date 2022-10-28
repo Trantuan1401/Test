@@ -30,15 +30,17 @@ class Order
      */
     private $PurchaseDate;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $Total;
+
 
     /**
      * @ORM\OneToMany(targetEntity=OrderDetail::class, mappedBy="Orders")
      */
     private $OrderDetail;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Total;
 
     public function __construct()
     {
@@ -74,17 +76,6 @@ class Order
         return $this;
     }
 
-    public function getTotal(): ?float
-    {
-        return $this->Total;
-    }
-
-    public function setTotal(float $Total): self
-    {
-        $this->Total = $Total;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, OrderDetail>
@@ -112,6 +103,18 @@ class Order
                 $orderDetail->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->Total;
+    }
+
+    public function setTotal(?float $Total): self
+    {
+        $this->Total = $Total;
 
         return $this;
     }
