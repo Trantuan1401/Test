@@ -46,6 +46,8 @@
 										{{ product.category.Name }}</h6>
 									<p>Price:
 										{{ product.price }}</p>
+									<h6>Publisher:
+										{{ product.publisher.name }} </h6>
 								</div>
 								<div class="card-footer">
 									<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">Show</a>
