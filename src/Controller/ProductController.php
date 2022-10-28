@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Order;
+use App\Entity\OrderDetail;
 use App\Form\ProductType;
-use App\Repository\AppUserRepository;
+use App\Repository\OrderRepository;
+use App\Repository\OrderDetailRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -13,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Psr\Log\LoggerInterface;
 
@@ -25,7 +29,10 @@ class ProductController extends AbstractController
     /**
      * @Route("/listing/{pageId}", name="app_product_index", methods={"GET"})
      */
-    public function index(Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository, int $pageId = 1): Response
+    public function index(Request $request,
+    ProductRepository $productRepository,
+    CategoryRepository $categoryRepository,
+    int $pageId = 1): Response
     {   
         
         $minPrice = $request->query->get('minPrice');
@@ -98,55 +105,55 @@ class ProductController extends AbstractController
     ProductRepository     $productRepository,
     ManagerRegistry       $mr): Response
     {
-    $this->denyAccessUnlessGranted('ROLE_USER');
-    $entityManager = $mr->getManager();
-    $session = $request->getSession(); //get a session
-    // check if session has elements in cart
-    if ($session->has('cartElements') && !empty($session->get('cartElements'))) {
-    try {
-    // start transaction!
-    $entityManager->getConnection()->beginTransaction();
-    $cartElements = $session->get('cartElements');
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $entityManager = $mr->getManager();
+        $session = $request->getSession(); //get a session
+        // check if session has elements in cart
+        if ($session->has('cartElements') && !empty($session->get('cartElements'))) {
+            try {
+                // start transaction!
+                $entityManager->getConnection()->beginTransaction();
+                $cartElements = $session->get('cartElements');
 
-    //Create new Order and fill info for it. (Skip Total temporarily for now)
-    $order = new Order();
-    date_default_timezone_set('Asia/Ho_Chi_Minh');
-    $order->setOrderDate(new \DateTime());
-    /** @var \App\Entity\User $user */
-    $user = $this->getUser();
-    $order->setUser($user);
-    $orderRepository->add($order, true); //flush here first to have ID in Order in DB.
+                //Create new Order and fill info for it. (Skip Total temporarily for now)
+                $order = new Order();
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $order->setPurchaseDate(new \DateTime());
+                /** @var \App\Entity\User $user */
+                $user = $this->getUser();
+                $order->setUser($user);
+                $orderRepository->add($order, true); //flush here first to have ID in Order in DB.
 
-    //Create all Order Details for the above Order
-    $total = 0;
-    foreach ($cartElements as $product_id => $quantity) {
-    $product = $productRepository->find($product_id);
-    //create each Order Detail
-    $orderDetail = new OrderDetail();
-    $orderDetail->setOrd($order);
-    $orderDetail->setProduct($product);
-    $orderDetail->setQuantity($quantity);
-    $orderDetailRepository->add($orderDetail);
+                //Create all Order Details for the above Order
+                $total = 0;
+                foreach ($cartElements as $product_id => $quantity) {
+                $product = $productRepository->find($product_id);
+                //create each Order Detail
+                $orderDetail = new OrderDetail();
+                $orderDetail->setOrders($order);
+                $orderDetail->setProduct($product);
+                $orderDetail->setQuantity($quantity);
+                $orderDetailRepository->add($orderDetail);
 
-    $total += $product->getPrice() * $quantity;
-    }
-    $order->setTotal($total);
-    $orderRepository->add($order);
-    // flush all new changes (all order details and update order's total) to DB
-    $entityManager->flush();
+                $total += $product->getPrice() * $quantity;
+                }
+                $order->setTotal($total);
+                $orderRepository->add($order);
+                // flush all new changes (all order details and update order's total) to DB
+                $entityManager->flush();
 
-    // Commit all changes if all changes are OK
-    $entityManager->getConnection()->commit();
+                // Commit all changes if all changes are OK
+                $entityManager->getConnection()->commit();
 
-    // Clean up/Empty the cart data (in session) after all.
-    $session->remove('cartElements');
-    } catch (Exception $e) {
-    // If any change above got trouble, we roll back (undo) all changes made above!
-    $entityManager->getConnection()->rollBack();
-    }
-    return new Response("Check in DB to see if the checkout process is successful");
-    } else
-    return new Response("Nothing in cart to checkout!");
+                // Clean up/Empty the cart data (in session) after all.
+                $session->remove('cartElements');
+            } catch (FileException $e) {
+            // If any change above got trouble, we roll back (undo) all changes made above!
+            $entityManager->getConnection()->rollBack();
+            }
+            return new Response("Check in DB to see if the checkout process is successful");
+        } else
+        return new Response("Nothing in cart to checkout!");
     }
 
 
