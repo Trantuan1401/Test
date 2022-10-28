@@ -18,6 +18,11 @@
                     {{ app.user ? 'Logout' : 'Login' }}
                 </a>
             </li>
+            <li class="nav-item">
+            <a href="{{ path('app_review_cart') }}" class="nav-link">Show Cart</a></li>
+            </li>
+            <li class="nav-item">
+            <a href="{{ path('app_checkout_cart') }}" class="nav-link">Check out Cart</a></li>
         </ul>
     </header>
 </div>

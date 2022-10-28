@@ -80,7 +80,7 @@ class ProductController extends AbstractController
             //Re-save cart Elements back to session again (after update/append new product to shopping cart)
             $session->set('cartElements', $cartElements);
         }
-        return new Response(); //means 200, successful
+        return $this->redirectToRoute('app_product_show', ['id'=> $product->getId()], Response::HTTP_SEE_OTHER);
 
     }
 
