@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 29, 2022 lúc 07:14 AM
+-- Thời gian đã tạo: Th10 29, 2022 lúc 10:10 AM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 7.4.30
 
@@ -155,7 +155,7 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`id`, `name`, `price`, `category_id`, `imgurl`, `publisher_id`, `description`) VALUES
 (1, 'Iphone 14', 799, 1, '1.png', 1, 'Telephone'),
 (2, 'Iphone 14 Plus', 899, 1, '2.png', 1, 'iOS 16-6 GB-128 GB'),
-(8, 'Geance Gaming PC', 450, 3, '8.jpg', 1, 'RGB - 2 x USB 3.0 - 4 x 120mm RGB case Fans'),
+(8, 'PC ESPORT 01', 3000, 3, '8.png', 1, 'i3-10105F/H510/8GB RAM/240GB SSD/GT 710'),
 (10, 'Laptop Acer Nitro 5', 2000, 2, '10.jpg', 1, 'i5 12500H/8GB/512GB/15.6\"FHD'),
 (11, 'Iphone 13 Pro', 999, 1, '11.jpg', 1, 'iOS 15-128GB- 6 GB'),
 (12, 'Samsung Galaxy S10 5G', 867, 1, '12.jpg', 1, 'Android 9 (Pie)-Exynos 9820-8 GB-256 GB'),
@@ -172,7 +172,14 @@ INSERT INTO `product` (`id`, `name`, `price`, `category_id`, `imgurl`, `publishe
 (23, 'Dell Vostro 5620', 1889, 2, '23.jpg', 5, 'i5 1240P-8GB-256GB-OfficeHS-Win11'),
 (24, 'Apple iPhone 7 Plus', 578, 1, '24.jpg', 5, '128 GB-1080 x 1920 pixels (FullHD)'),
 (25, 'iPhone Xs Max 256GB', 699, 1, '25.jpg', 5, 'iOS 12-Apple A12 Bionic-4 GB-256 GB'),
-(26, 'Asus ROG Strix Gaming', 2367, 2, '26.jpg', 1, '6800H-8GB-512GB-4GB RTX3050-144Hz');
+(26, 'Asus ROG Strix Gaming', 2367, 2, '26.jpg', 1, '6800H-8GB-512GB-4GB RTX3050-144Hz'),
+(27, 'PC VAMPIRIC', 2899, 3, '27.png', 1, 'Core I3 - 16GB Ram - SSD 256GB - 3060 12GB - 650W'),
+(28, 'PC STREAMER 15', 3499, 3, '28.png', 1, 'i7 12700F | RTX 3070 6GB | RAM 16GB'),
+(29, 'PC Ryzen 5', 1999, 3, '29.png', 1, '7800X | RAM 32GB | SSD 1000GB NVMe'),
+(30, 'PC ULTRA 11', 2499, 3, '30.png', 1, 'Ryzen 7 5800X/ B550M/ 32GB RAM/ 250GB SSD/ 1TB HDD/ RTX 3060 Ti/ 750W'),
+(31, 'PC AMD Ryzen 9', 2899, 3, '31.png', 1, '5900X | 3080 12GB | RAM 16GB'),
+(32, 'PC Ryzen 5 5600G', 1000, 3, '32.png', 1, '5600G | RAM 16GB | SSD 500GB NVMe'),
+(33, 'PC AMD Ryzen 7 5900X', 2477, 3, '33.png', 1, '5900X | 3080 12GB | RAM 16GB');
 
 -- --------------------------------------------------------
 
@@ -287,7 +294,7 @@ ALTER TABLE `order_detail`
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
