@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 28, 2022 lúc 04:11 PM
+-- Thời gian đã tạo: Th10 29, 2022 lúc 07:14 AM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 7.4.30
 
@@ -106,7 +106,8 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`id`, `user_id`, `purchase_date`, `total`) VALUES
-(1, 1, '2022-10-28 21:01:25', 16779);
+(1, 1, '2022-10-28 21:01:25', 16779),
+(2, 1, '2022-10-29 11:29:36', 69091);
 
 -- --------------------------------------------------------
 
@@ -126,7 +127,10 @@ CREATE TABLE `order_detail` (
 --
 
 INSERT INTO `order_detail` (`id`, `product_id`, `orders_id`, `quantity`) VALUES
-(1, 1, 1, 21);
+(1, 1, 1, 21),
+(2, 12, 2, 55),
+(3, 8, 2, 45),
+(4, 24, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -150,7 +154,25 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`id`, `name`, `price`, `category_id`, `imgurl`, `publisher_id`, `description`) VALUES
 (1, 'Iphone 14', 799, 1, '1.png', 1, 'Telephone'),
-(2, 'Iphone 14 Plus', 899, 1, '2.png', 1, NULL);
+(2, 'Iphone 14 Plus', 899, 1, '2.png', 1, 'iOS 16-6 GB-128 GB'),
+(8, 'Geance Gaming PC', 450, 3, '8.jpg', 1, 'RGB - 2 x USB 3.0 - 4 x 120mm RGB case Fans'),
+(10, 'Laptop Acer Nitro 5', 2000, 2, '10.jpg', 1, 'i5 12500H/8GB/512GB/15.6\"FHD'),
+(11, 'Iphone 13 Pro', 999, 1, '11.jpg', 1, 'iOS 15-128GB- 6 GB'),
+(12, 'Samsung Galaxy S10 5G', 867, 1, '12.jpg', 1, 'Android 9 (Pie)-Exynos 9820-8 GB-256 GB'),
+(13, 'Samsung Galaxy Note 10+', 1222, 1, '13.jpg', 1, 'Android 9 (Pie)-Exynos 9825-12 GB-256 GB'),
+(14, 'MacBook Pro 14 M1 Pro 2021', 2999, 2, '14.jpg', 4, '10-core CPU/16GB/1TB SSD/16-core GPU (MKGQ3SA/A)'),
+(15, 'XUMGamingPC', 1299, 3, '15.jpg', 4, 'CPU : Intel Core i5-12400F-MAIN : B660-RAM : 8GB DDR4-SSD : 250GB SSD-VGA: GTX 1660 SUPER'),
+(16, 'Samsung Galaxy Note 20 Ultra', 1799, 1, '16.jpg', 4, 'Android 10-Exynos 990-8 GB-256 GB'),
+(17, 'Asus Gaming ROG Flow Z13 GZ301Z', 2799, 2, '17.jpg', 4, 'i7 12700H-16GB-512GB-4GB RTX3050-120Hz'),
+(18, 'iPhone 12 Pro Max', 1455, 1, '18.jpg', 4, 'iOS 15-Apple A14 Bionic-6 GB-256 GB'),
+(19, 'Samsung Galaxy S22 Ultra', 1666, 1, '19.jpg', 4, 'Android 12-Snapdragon 8 Gen 1-12 GB-256 GB'),
+(20, 'Asus Vivobook', 1239, 2, '20.jpg', 1, 'i5 1240P-8GB-512GB-Win11'),
+(21, 'HP Pavilion 15', 899, 2, '21.jpg', 5, 'i5 1235U-8GB-512GB-2GB MX550-Win11'),
+(22, 'Acer Nitro 5', 2199, 2, '22.jpg', 5, 'i7 12700H-8GB-512GB-4GB RTX3050Ti-144Hz'),
+(23, 'Dell Vostro 5620', 1889, 2, '23.jpg', 5, 'i5 1240P-8GB-256GB-OfficeHS-Win11'),
+(24, 'Apple iPhone 7 Plus', 578, 1, '24.jpg', 5, '128 GB-1080 x 1920 pixels (FullHD)'),
+(25, 'iPhone Xs Max 256GB', 699, 1, '25.jpg', 5, 'iOS 12-Apple A12 Bionic-4 GB-256 GB'),
+(26, 'Asus ROG Strix Gaming', 2367, 2, '26.jpg', 1, '6800H-8GB-512GB-4GB RTX3050-144Hz');
 
 -- --------------------------------------------------------
 
@@ -174,7 +196,9 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `name`, `phone_num`) VALUES
 (1, 'tien1902@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$0dxF9uZxjTV2f/pY5.4vruHeyVlcfUlRYM0ZIv8HpSRIF7A5g/Sxi', 'tien', '1234567890'),
 (2, 'khanh@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$jx9MOvBDkqxr1CfmpcNBrecLBlOvYl4vYENwP5m6E5hNIIA3jt5O2', 'khanh', '1123456789'),
-(3, 'abc@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$onlfq2WT/PXJNLhLOqktduGGbjcMgpr9AXTMFTWi6ujnPA4/9Y9l6', 'abc', '1112345678');
+(3, 'abc@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$onlfq2WT/PXJNLhLOqktduGGbjcMgpr9AXTMFTWi6ujnPA4/9Y9l6', 'abc', '1112345678'),
+(4, 'khang@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$QpLfSyjK0SkeRwrx57o4VeqJ9KYZWOXkDRc6x2zKb6jKLlrg/CGpe', 'khang', '1111567890'),
+(5, 'khanhseller@gmail.com', '[\"ROLE_SELLER\"]', '$2y$13$yvGL3HaXDvQMAA04/Pmk/eDFXE9DgtOhxjAUxVuYSw4R9erPij3lG', 'khanhs', '0984342423');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -251,25 +275,25 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
