@@ -7,6 +7,11 @@
 		<div class="row">
 			<div class="col-3">
 				<form action={{ path('app_product_index') }} method="get">
+					{% if word is null %}
+					<input class="form-control" type="search" placeholder="Search" aria-label="Search" name="word">
+					{% else %}
+					<input class="form-control" type="search" value="{{ word }}" aria-label="Search" name="word">
+					{% endif %}
 					Category:
                         <select name="category">
                         <option value="">All</option>
@@ -19,9 +24,17 @@
                         {% endfor %}
                         </select><br>
 				Min Price:
+				{% if min is null %}
 				<input type="number" name="minPrice"><br>
+				{% else %}
+				<input type="number" name="minPrice" value="{{ min }}"><br>
+				{% endif %}
 				Max Price:
+				{% if max is null %}
 				<input type="number" name="maxPrice"><br>
+				{% else %}
+				<input type="number" name="maxPrice" value="{{ min }}"><br>
+				{% endif %}
 				<input type="submit" value="Filter" class="btn btn-primary">
 				|
 				<a href="{{ path('app_product_index') }}" class="btn btn-primary">Reset</a>

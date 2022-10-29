@@ -51,6 +51,9 @@ class ProductController extends AbstractController
                 'cat' => $cat,
                 'categories' => $categoryRepository->findAll(),
                 'numOfPages' => $numberOfPages,
+                'word' => $word,
+                'min' => $minPrice,
+                'max' => $maxPrice,
             ]);
         
     }
@@ -149,7 +152,7 @@ public function reviewCart(Request $request): Response
     // If any change above got trouble, we roll back (undo) all changes made above!
     $entityManager->getConnection()->rollBack();
     }
-    return new Response("Checkout process is successful, check in database for detail!");
+    return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     } else
     return new Response("Shopping Cart has no product, please add some!");
     }
