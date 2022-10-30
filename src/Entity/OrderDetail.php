@@ -32,6 +32,8 @@ class OrderDetail
      */
     private $Quantity;
 
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,4 +74,6 @@ class OrderDetail
 
         return $this;
     }
+
+
 }

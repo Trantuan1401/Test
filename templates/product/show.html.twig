@@ -21,16 +21,23 @@
                 <td>{{ product.Price }}</td>
             </tr>
             <tr>
+                <th>Product Description</th>
+                <td>{{ product.Description }}</td>
+            </tr>
+            <tr>
                 <th>Publisher</th>
                 <td>{{ product.Publisher.Name }}</td>
             </tr>
         </tbody>
     </table>
+    {% if app.user %}
+            <form action={{ path('app_add_cart',{ 'id': product.id }) }} method="get">
+                <input type="number" name="quantity" placeholder="Amount"/>
+                <input type="submit" value="Add" class="btn btn-success">
+                <a href="{{ path('app_product_index') }}" class="btn btn-warning">Back to list</a>
 
-    <a href="{{ path('app_product_index') }}" class="btn btn-warning">Back to list</a>
-
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">Edit</a>
-
-    
+                <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">Edit</a>
+            </form>
+    {% endif %}
 </div>
 {% endblock %}
