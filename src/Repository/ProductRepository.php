@@ -62,17 +62,6 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery();
         }
 
-    public function findProductByCat($cat): array
-    {
-        $entityManager = $this->getEntityManager();
-        $qb = $entityManager->createQueryBuilder();
-        $qb->select('p')
-            ->from('App:Product', 'p')
-            ->where('p.Category =' . $cat);
-        // returns an array of Product objects
-        return $qb->getQuery()->getResult();
-    }
-
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */
