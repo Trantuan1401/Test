@@ -3,41 +3,32 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Product</h1>
+    <div class="container">
+        <div class="row mt-3 mb-4">
+            <div class="col-md-4">
+                <img src="{{ asset('images/product/' ~ product.imgurl) }}" alt="{{ product.name }}" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h1 class="mt-4 mt-md-0">{{ product.name }}</h1>
+                <h2>{{ product.price }} $</h2>
+                <hr>
+                <p><b>Description: </b>{{ product.description }} </p>
+                <p><b>Seller: </b> {{ product.publisher.name }} </p>
+                {% if app.user %}
+                <form action={{ path('app_add_cart',{ 'id': product.id }) }} method="get" class="mt-4 p-4 bg-light">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+				        <input type="number" name="quantity" placeholder="Amount"/>
+                    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.Name }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.Price }}</td>
-            </tr>
-            <tr>
-                <th>Product Description</th>
-                <td>{{ product.Description }}</td>
-            </tr>
-            <tr>
-                <th>Publisher</th>
-                <td>{{ product.Publisher.Name }}</td>
-            </tr>
-        </tbody>
-    </table>
-    {% if app.user %}
-            <form action={{ path('app_add_cart',{ 'id': product.id }) }} method="get">
-                <input type="number" name="quantity" placeholder="Amount"/>
-                <input type="submit" value="Add" class="btn btn-success">
+                    <input type="submit" class="btn btn-warning" value="Add to Cart">
+                </form>
+                {% endif %}
                 <a href="{{ path('app_product_index') }}" class="btn btn-warning">Back to list</a>
-
+                {% if product.publisher == app.user %}
                 <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">Edit</a>
-            </form>
-    {% endif %}
-</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

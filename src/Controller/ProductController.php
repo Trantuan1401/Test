@@ -83,19 +83,42 @@ class ProductController extends AbstractController
 
     }
 
-    /**
- * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
- */
-public function reviewCart(Request $request): Response
-{
-    $session = $request->getSession();
-    if ($session->has('cartElements')) {
-        $cartElements = $session->get('cartElements');
-    } else
-        $cartElements = [];
-    return $this->json($cartElements);
-}
+    // /**
+    // * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
+    // */
+    // public function reviewCart(Request $request): Response
+    // {
+    //     $session = $request->getSession();
+    //     if ($session->has('cartElements')) {
+    //         $cartElements = $session->get('cartElements');
+    //     } else
+    //         $cartElements = [];
+    //     return $this->json($cartElements);
+    // }
 
+    /**
+    * @Route("/reviewCart", name="app_review_cart", methods={"GET"})
+    */
+    public function cart(Request $request, ProductRepository $productRepository){
+        $total = 0;
+        $session = $request->getSession();
+        $cart = $session->get('cartElements',[]);
+        $cartWithData = [];
+        foreach ($cart as $id => $quantity){
+            $cartWithData[] = [
+                'product' => $productRepository->find($id),
+                'quantity' => $quantity
+            ];
+        }
+        foreach ($cartWithData as $item){
+            $totalItem = $item['product']->getPrice() * $item['quantity'];
+            $total += $totalItem;
+        }
+        return $this->render('cart/cart.html.twig',[
+            'items' => $cartWithData,
+            'total' => $total
+        ]);
+    }
 
     /**
     * @Route("/checkoutCart", name="app_checkout_cart", methods={"GET"})
